@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本語チャットボット</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #chat-container { max-width: 600px; margin: 20px auto; }
+        .message { padding: 10px; border-radius: 5px; margin: 5px 0; }
+        .user { background-color: #ddf; text-align: right; }
+        .bot { background-color: #f4f4f4; text-align: left; }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <h2>日本語チャットボット</h2>
+        <div id="chat-box"></div>
+        <input type="text" id="user-input" placeholder="メッセージを入力...">
+        <button onclick="sendMessage()">送信</button>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const userInput = document.getElementById("user-input").value;
+            if (!userInput) return;
+
+            // ユーザーのメッセージを表示
+            const chatBox = document.getElementById("chat-box");
+            const userMessage = document.createElement("div");
+            userMessage.className = "message user";
+            userMessage.textContent = userInput;
+            chatBox.appendChild(userMessage);
+
+            // 入力フィールドをクリア
+            document.getElementById("user-input").value = "";
+
+            // サーバーへリクエストを送信
+            const response = await fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userInput })
+            });
+            const data = await response.json();
+
+            // ボットの応答を表示
+            const botMessage = document.createElement("div");
+            botMessage.className = "message bot";
+            botMessage.textContent = data.response;
+            chatBox.appendChild(botMessage);
+
+            // スクロールを最新メッセージに合わせる
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+</body>
+</html>
