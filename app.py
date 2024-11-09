@@ -4,8 +4,8 @@ import torch
 
 app = Flask(__name__)
 
-# 日本語GPT-2 smallまたは軽量モデルのロード
-MODEL_NAME = "rinna/japanese-gpt2-small"  # 必要に応じて他の軽量モデルに変更
+# 日本語GPT-2 xsmallモデルとトークナイザーのロード
+MODEL_NAME = "rinna/japanese-gpt2-xsmall"
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 model = AutoModelForCausalLM.from_pretrained(MODEL_NAME)
 model = model.to("cpu")  # GPUがない場合はCPUで実行
@@ -31,4 +31,4 @@ def index():
     return render_template("index.html")
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=80)
