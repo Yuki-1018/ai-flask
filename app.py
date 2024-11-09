@@ -4,11 +4,11 @@ import torch
 
 app = Flask(__name__)
 
-# ローカルの「model」フォルダからモデルとトークナイザーを読み込み
-MODEL_PATH = "./model"
-tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
-model = AutoModelForCausalLM.from_pretrained(MODEL_PATH)
-model = model.to("cpu")  # CPUで動作させる
+# 日本語GPT-2 xsmallモデルとトークナイザーのロード
+MODEL_NAME = "rinna/japanese-gpt2-xsmall"
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+model = AutoModelForCausalLM.from_pretrained(MODEL_NAME)
+model = model.to("cpu")  # GPUがない場合はCPUで実行
 
 # 応答を生成する関数
 def generate_response(prompt, max_length=50):
